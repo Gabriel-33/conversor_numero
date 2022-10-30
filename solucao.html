@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+	<!-- CSS only -->
+	<!-- CSS only -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+
+</head>
+<body>
+	<div class="container">
+		<div class="row justify-content-center align-items-center">
+			<div class="col-md-7" style="margin-top:100px">
+				<div class="card">
+				  <div class="card-body">
+				  	<center><h5 class="card-title">Conversor romano para árabico</h5></center>
+					<form class="row g-3" id="romano-arabico">
+					  <div class="col-md-6">
+					    <label for="entrada-algorismo-romano" class="form-label">Algorismo romano:</label>
+					    <input type="text" class="form-control" id="entrada-algorismo-romano" value="" placeholder="Entrada em algorismo romano. Ex: X,XV,XVI..." required>
+					  </div>
+					  <div class="col-md-6">
+					    <label for="saida-algorismo-arabico" class="form-label" style="visibility: hidden;" id="saida-algorismo-arabico-label">Algorismo árabico:</label>
+					    <input type="hidden" class="form-control" id="saida-algorismo-arabico" value="" required>
+					  </div>
+						<div class="d-grid gap-2">
+							<button class="btn btn-primary" type="button" onClick="romanoParaDecimal()">converter</button>
+						</div>
+					</form>
+				  </div>
+				</div>
+			</div>
+			<div class="col-md-7" style="margin-top:100px">
+				<div class="card">
+				  <div class="card-body">
+				  	<center><h5 class="card-title">Conversor árabico para Romano</h5></center>
+					<form class="row g-3" id="arabico-romano">
+					  <div class="col-md-6">
+					    <label for="entrada-algorismo-arabico" class="form-label">Algorismo árabico:</label>
+					    <input type="text" class="form-control" id="entrada-algorismo-arabico" value="" placeholder="Entrada em algorismo árabico. Ex: 1,2,15..." required>
+					  </div>
+					  <div class="col-md-6">
+					    <label for="saida-algorismo-romano" class="form-label" style="visibility: hidden;" id="saida-algorismo-romano-label">Algorismo romano:</label>
+					    <input type="hidden" class="form-control" id="saida-algorismo-romano" value="" required>
+					  </div>
+						<div class="d-grid gap-2">
+							<button class="btn btn-success" type="button" onClick="decimalParaRomano()">converter</button>
+						</div>
+					</form>
+				  </div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<style type="text/css">
+		body{
+			background-color: rgba(0,0,0,0.10);
+		}
+	</style>
+</body>
+<script type="text/javascript">
+	function romanoParaDecimal() {
+		var entrada = document.querySelector("#romano-arabico #entrada-algorismo-romano").value;
+		if(entrada.length !=0){
+			let resultado = 0;
+			let menor_que_numero = null;
+			let algarismos = {I:1, V:5, X:10, L:50, C:100, D:500, M:1000 }
+			entrada = entrada.toUpperCase();
+			for (let i = entrada.length-1; i >= 0; i--) {
+			  let char = entrada.charAt(i);
+			  for (let chave in algarismos) {
+			      if(char === chave){
+			          let valor_atual = parseInt(algarismos[chave]);
+			          if (menor_que_numero !== null) {
+			              if (valor_atual < menor_que_numero) {
+			                  valor_atual = valor_atual*-1;
+			              }
+			          }
+			          resultado = resultado + valor_atual;
+			          menor_que_numero = valor_atual;
+			      }
+			  }
+			}
+			var valor_arabico = document.getElementById("saida-algorismo-arabico");
+			var label_arabico = document.getElementById("saida-algorismo-arabico-label");
+			label_arabico.style.visibility = "visible";
+			valor_arabico.value = parseInt(resultado);
+			valor_arabico.type = "text";
+			return resultado;
+		}else{
+			alert("Campo vázio!");
+		}
+	}; 
+	function decimalParaRomano() {
+		let entrada = document.querySelector("#arabico-romano #entrada-algorismo-arabico").value
+        if(entrada.length != 0){
+        	let num = [1,4,5,9,10,40,50,90,100,400,500,900,1000,2000,3000];
+		    let sym = ["I","IV","V","IX","X","XL","L","XC","C","CD","D","CM","M","MM","MMM"];
+		    let i = 12;
+		    let valor_final = "";
+		    while(entrada > 0){
+				    let div = Math.floor(entrada/num[i]);
+				    entrada = entrada % num[i];
+				    while(div--){
+				        valor_final += sym[i];
+				    }
+			    i--;
+		    }
+	        var valor_romano = document.getElementById("saida-algorismo-romano");
+			var label_romano = document.getElementById("saida-algorismo-romano-label");
+			label_romano.style.visibility = "visible";
+			valor_romano.value = valor_final;
+			valor_romano.type = "text";
+	        return entrada;
+        }else{
+        	alert("camo vázio!");
+        }
+      }
+</script>
+</html>
